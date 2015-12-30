@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# take a heroku app name and the number of servers you want it to have.
+APP=$1
+SERVNUM=$2
+
+heroku ps:scale web=$SERVNUM --app $APP
