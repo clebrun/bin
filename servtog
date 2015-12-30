@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+
+# because scaling heroku apps is tooooo haaaaaaaaaarrrrrdduuuuuh
+
 # take a heroku app name and the number of servers you want it to have.
 APP=$1
 SERVNUM=$2
