@@ -4,12 +4,12 @@
 
 if [[ $# -eq 0 ]]; then
   echo "Usage: $0 <appname> <number of dynos you want>
-  uses heroku ps:scale internally, check that for more info.
-  set dynos to 0 to turn app off."
+  Uses heroku ps:scale internally, check that for more info.
+  Set dynos to 0 to turn app off."
+else
+  # take a heroku app name and the number of servers you want it to have.
+  APP_NAME=$1
+  NUM_OF_DYNO=$2
+
+  heroku ps:scale web=$NUM_OF_DYNO --app $APP_NAME
 fi
-
-# take a heroku app name and the number of servers you want it to have.
-APP_NAME=$1
-NUM_OF_DYNO=$2
-
-heroku ps:scale web=$NUM_OF_DYNO --app $APP_NAME
