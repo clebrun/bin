@@ -4,6 +4,6 @@
 
 # take a heroku app name and the number of servers you want it to have.
 APP_NAME=$1
-NUM_OF_SERVS=$2
+NUM_OF_DYNO=$2
 
-heroku ps:scale web=$NUM_OF_SERVS --app $APP_NAME
+heroku ps:scale web=$NUM_OF_DYNO --app $APP_NAME
