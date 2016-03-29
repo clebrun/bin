@@ -136,10 +136,6 @@ for dir in $backuptargets ; do
     if ! output="$($tarsnap -c -f "$hostname-$archivetype-$today-$nicedirname" -C / $tarsnapbackupoptions "$dir" 2>&1)" ; then
         log_message "Failed to back up \"$dir\"! ($output)"
         backuprc=1
-# We keep 12 monthly backups
-monthlybackups=$(echo "$archives" | grep "$hostname-monthly-" | cut -d_ -f1 | uniq | sort -rn)
-if [ "$(echo "$monthlybackups" | wc -l)" -gt 12 ] ; then
-    log_debug "More than 12 monthly backups, deleting the oldest"
     fi
 done
 # Update the archive listing
