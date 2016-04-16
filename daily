@@ -11,8 +11,8 @@ fi
 
 echo
 echo 'running brew update, upgrade...'
-brew update && brew upgrade && echo 'Update successful.' || echo 'Update failed.'
+brew update && brew upgrade && echo 'Update successful.'
 
 echo
 echo 'backing up Documents, Projects and bin'
-sudo acts && echo 'Backup was successful!' || echo 'Backup failed.'
+sudo acts && echo 'Backup was successful!'
