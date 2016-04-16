@@ -16,3 +16,7 @@ brew update && brew upgrade && echo 'Update successful.'
 echo
 echo 'backing up Documents, Projects and bin'
 sudo acts && echo 'Backup was successful!'
+
+echo
+echo 'updating bundle-audit'
+bundle-audit update
