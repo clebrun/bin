@@ -9,8 +9,10 @@ if [[ $UID != 0 ]]; then # only ask if not already elevated.
   # TODO: Should handle rejected sudo request gracefully.
 fi
 
+echo
 echo 'running brew update, upgrade...'
 brew update && brew upgrade && echo 'Update successful.' || echo 'Update failed.'
 
+echo
 echo 'backing up Documents, Projects and bin'
 sudo acts && echo 'Backup was successful!' || echo 'Backup failed.'
