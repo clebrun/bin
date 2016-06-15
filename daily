@@ -22,3 +22,7 @@ sudo acts && echo 'Backup was successful!'
 echo
 echo 'updating bundle-audit'
 bundle-audit update
+
+echo
+echo 'updating gem --system'
+gem update --system
