@@ -1,4 +1,6 @@
 #! /usr/bin/env bash
+# TODO: Make tasks happen concurrently
+# TODO: Save daily output into persistant log
 
 # A script for running daily maintinence tasks.
 
