@@ -1,3 +1,5 @@
+#! /usr/bin/env bash
+
 # A script for running daily maintinence tasks.
 
 # Ask for sudo privileges. Required for acts/tarsnap backup
