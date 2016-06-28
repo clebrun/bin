@@ -37,3 +37,8 @@ echo
 echo '---'
 echo 'updating gem --system'
 gem update --system
+
+echo
+echo '---'
+echo 'Tmux open sessions:'
+tmux list-sessions
