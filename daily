@@ -15,30 +15,30 @@ fi
 
 echo
 echo '---'
-echo 'getting weather from wttr.in'
+echo 'WEATHER'
 curl http://wttr.in/Goleta
 
 echo
 echo '---'
-echo 'running brew update, upgrade...'
+echo 'BREW'
 brew update && brew upgrade && echo 'Update successful.'
 
 echo
 echo '---'
-echo 'backing up Documents, Projects and bin'
+echo 'BACKUP'
 sudo acts && echo 'Backup was successful!'
 
 echo
 echo '---'
-echo 'updating bundle-audit'
+echo 'BUNDLE-AUDIT'
 bundle-audit update
 
 echo
 echo '---'
-echo 'updating gem --system'
+echo 'RUBYGEMS'
 gem update --system
 
 echo
 echo '---'
-echo 'Tmux open sessions:'
+echo 'TMUX'
 tmux list-sessions
