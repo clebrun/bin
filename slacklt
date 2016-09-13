@@ -1,0 +1,19 @@
+#! /usr/bin/env bash
+
+# TODO: make port a script argument
+# TODO: make channel a script argument
+# TODO: y/n dialog to restart localtunnel
+# TODO: make y/n restart dialog optional
+
+# run a localtunnel to port 3000, echo the output to the slack channel #dev.
+# restart if necessary.
+
+echo "Sending localtunnel output to #dev channel"
+
+while : # loop forever
+do
+  lt -p 3000 | xargs -I message echo 'Rails development server: message' | slackcat -t -s -p -c dev
+  echo "Localtunnel url has crashed, restarting." | slackcat -t -s -p -c dev
+done
+# Uncomment when dialog todo is done
+# echo "Localtunnel url shutting down. Goodbye!" | slackcat -t -s -p -c dev
