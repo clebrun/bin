@@ -8,14 +8,19 @@
 # run a localtunnel to port 3000, echo the output to the slack channel #dev.
 # restart if necessary.
 
+# exit message
+trap '{ echo "Localtunnel url shutting down. Goodbye! :wave:" | to-slack; exit 1; }' INT
+
+to-slack() {
+  slackcat -t -s -p -c dev
+}
+
 echo "Sending localtunnel output to #dev channel"
 
-echo "Starting localtunnel to rails dev server!" | slackcat -t -s -p -c dev
+echo "Starting localtunnel to rails dev server!" | to-slack 
 
-while : # loop forever
+while :
 do
-  lt -p 3000 | xargs -I message echo 'Rails development server: message' | slackcat -t -s -p -c dev
-  echo ":boom: Localtunnel has crashed! Restarting." | slackcat -t -s -p -c dev
+  lt -p 3000 | xargs -I message echo 'Rails development server: message' | to-slack
+  echo ":boom: Localtunnel has crashed! Restarting." | to-slack
 done
-# Uncomment when dialog todo is done
-# echo "Localtunnel url shutting down. Goodbye!" | slackcat -t -s -p -c dev
