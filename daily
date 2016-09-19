@@ -1,8 +1,8 @@
 #! /usr/bin/env bash
 # TODO: Make tasks happen concurrently
-# TODO: Save daily output into persistant log
+# TODO: Save daily output into persistent log
 
-# A script for running daily maintinence tasks.
+# A script for running daily maintenance tasks.
 
 # Ask for sudo privileges. Required for acts/tarsnap backup
 # Don't want to ask for privs lazily, because this should be the sort of thing you
