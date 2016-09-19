@@ -23,6 +23,7 @@ do_command() { # $1 is the command title, $2 is the command to be evaluated
 # Check host OS, set $HOST_OS
 if [[ "$OSTYPE" == "darwin"* ]]; then
   do_command 'BREW' "brew update && brew upgrade && echo 'Update successful.'"
+  do_command 'BACKUP' "sudo acts && echo 'Backup was successful!'"
 elif [[ "$OSTYPE" == "linux-gnu" ]]; then
   do_command 'APT-GET' "sudo apt-get update && sudo apt-get upgrade && echo 'Update successful'"
 else
@@ -32,8 +33,6 @@ else
 fi
 
 do_command 'WEATHER' "curl http://wttr.in/Goleta"
-
-do_command 'BACKUP' "sudo acts && echo 'Backup was successful!'"
 
 do_command 'BUNDLE-AUDIT' "bundle-audit update"
 
