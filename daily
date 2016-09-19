@@ -13,32 +13,29 @@ if [[ $UID != 0 ]]; then # only ask if not already elevated.
   # TODO: Should handle rejected sudo request gracefully.
 fi
 
-echo
-echo '---'
-echo 'WEATHER'
-curl http://wttr.in/Goleta
+do_command() { # $1 is the command title, $2 is the command to be evaluated
+  echo
+  echo '---'
+  echo "$1"
+  eval $2
+}
 
-echo
-echo '---'
-echo 'BREW'
-brew update && brew upgrade && echo 'Update successful.'
+# Check host OS, set $HOST_OS
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  do_command 'BREW' "brew update && brew upgrade && echo 'Update successful.'"
+  do_command 'BACKUP' "sudo acts && echo 'Backup was successful!'"
+elif [[ "$OSTYPE" == "linux-gnu" ]]; then
+  do_command 'APT-GET' "sudo apt-get update && sudo apt-get upgrade && echo 'Update successful'"
+else
+  echo
+  echo '---'
+  echo "UNABLE TO DETERMINE HOST OS. CANNOT UPDATE"
+fi
 
-echo
-echo '---'
-echo 'BACKUP'
-sudo acts && echo 'Backup was successful!'
+do_command 'WEATHER' "curl http://wttr.in/Goleta"
 
-echo
-echo '---'
-echo 'BUNDLE-AUDIT'
-bundle-audit update
+do_command 'BUNDLE-AUDIT' "bundle-audit update"
 
-echo
-echo '---'
-echo 'RUBYGEMS'
-gem update --system
+do_command 'RUBYGEMS' "gem update --system"
 
-echo
-echo '---'
-echo 'TMUX'
-tmux list-sessions
+do_command 'TMUX' "tmux list-sessions"
