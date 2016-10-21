@@ -10,12 +10,12 @@
 
 echo "Sending localtunnel output to #dev channel"
 
-echo "Localtunnel url has crashed, restarting." | slackcat -t -s -p -c dev
+echo "Localtunnel url has crashed, restarting." | slackcat -t -s -p -c dev-bots
 
 while : # loop forever
 do
-  lt -p 3000 | xargs -I message echo 'Rails development server: message' | slackcat -t -s -p -c dev
-  echo "Localtunnel url has crashed, restarting." | slackcat -t -s -p -c dev
+  lt -p 3000 | xargs -I message echo 'Rails development server: message' | slackcat -t -s -p -c dev-bots
+  echo "Localtunnel url has crashed, restarting." | slackcat -t -s -p -c dev-bots
 done
 # Uncomment when dialog todo is done
-# echo "Localtunnel url shutting down. Goodbye!" | slackcat -t -s -p -c dev
+# echo "Localtunnel url shutting down. Goodbye!" | slackcat -t -s -p -c dev-bots
