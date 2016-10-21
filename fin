@@ -1,0 +1,16 @@
+#! /usr/bin/env bash
+
+# Search for file path substrings in current directory, open in fuzzy finder,
+# select files to open in nvim.
+
+# $1 is the search substring
+
+if [[ -n $1 ]]; then # if arg, search for paths (in current dir) containing arg first
+  nvim $(
+    find ./ -ipath "*$1*" | fzf -m --reverse --preview="head {}"
+  )
+else # else, open up 
+  nvim $(
+    fzf -m --reverse --preview="head {}"
+  )
+fi
