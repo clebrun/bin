@@ -1,8 +1,8 @@
 #! /usr/bin/env bash
 # TODO: Make tasks happen concurrently
-# TODO: Save daily output into persistant log
+# TODO: Save daily output into persistent log
 
-# A script for running daily maintinence tasks.
+# A script for running daily maintenance tasks.
 
 # Ask for sudo privileges. Required for acts/tarsnap backup
 # Don't want to ask for privs lazily, because this should be the sort of thing you
@@ -13,32 +13,32 @@ if [[ $UID != 0 ]]; then # only ask if not already elevated.
   # TODO: Should handle rejected sudo request gracefully.
 fi
 
-echo
-echo '---'
-echo 'WEATHER'
-curl http://wttr.in/Goleta
+do_command() { # $1 is the command title, $2 (optional) is the command to be evaluated
+  echo
+  echo '---'
+  echo "$1"
+  if [[ ! -z $2 ]]; then
+    eval $2
+  fi
+}
 
-echo
-echo '---'
-echo 'BREW'
-brew update && brew upgrade && echo 'Update successful.'
+# Check host OS, set $HOST_OS
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  do_command 'BREW' "brew update && brew upgrade && echo 'Update successful.'"
+  do_command 'BACKUP' "sudo acts && echo 'Backup was successful!'"
+elif [[ "$OSTYPE" == "linux-gnu" ]]; then
+  do_command 'APT-GET' "sudo apt-get update && sudo apt-get upgrade && echo 'Update successful'"
+else
+  do_command 'UNABLE TO DETERMINE HOST OS. UPDATE COMMAND CANCELED.'
+fi
 
-echo
-echo '---'
-echo 'BACKUP'
-sudo acts && echo 'Backup was successful!'
+do_command 'WEATHER' "curl http://wttr.in/Goleta"
 
-echo
-echo '---'
-echo 'BUNDLE-AUDIT'
-bundle-audit update
+do_command 'BUNDLE-AUDIT' "bundle-audit update"
 
-echo
-echo '---'
-echo 'RUBYGEMS'
-gem update --system
+do_command 'RUBYGEMS' "gem update --system"
 
-echo
-echo '---'
-echo 'TMUX'
-tmux list-sessions
+do_command 'TMUX' "tmux list-sessions"
+
+do_command 'RBENV' \
+  "pushd $(pwd) && cd ~/.rbenv && git pull && cd plugins/ruby-build && git pull && popd"

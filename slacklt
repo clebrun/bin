@@ -25,3 +25,6 @@ do
   lt -p 3000 | xargs -I message echo 'Rails development server: message' | to-slack
   echo ":boom: Localtunnel has crashed! Restarting." | to-slack
 done
+# Uncomment when dialog todo is done
+# echo "Localtunnel url shutting down. Goodbye!" | slackcat -t -s -p -c dev-bots
+>>>>>>> 0046e2f541203d635a1dc8358c54158976168ac4
