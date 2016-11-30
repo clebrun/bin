@@ -42,3 +42,6 @@ do_command 'TMUX' "tmux list-sessions"
 
 do_command 'RBENV' \
   "pushd $(pwd) && cd ~/.rbenv && git pull && cd plugins/ruby-build && git pull && popd"
+
+do_command 'NVIM UPDATE' \
+  "nvim +PlugUpdate +qa"
