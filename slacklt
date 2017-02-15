@@ -9,7 +9,7 @@
 # restart if necessary.
 
 to-slack() {
-  slackcat -t -s -p -c dev
+  slackcat -t -s -p -c dev-bots
 }
 
 echo "Press Ctrl-C to exit slacklt."
@@ -27,4 +27,3 @@ do
 done
 # Uncomment when dialog todo is done
 # echo "Localtunnel url shutting down. Goodbye!" | slackcat -t -s -p -c dev-bots
->>>>>>> 0046e2f541203d635a1dc8358c54158976168ac4
