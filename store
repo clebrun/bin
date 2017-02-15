@@ -1,0 +1,6 @@
+#! /usr/bin/env zsh
+
+# tar + zstd made easy-er-ish
+tar -cvf $1.tar $1 && \
+  zstd -19 $1.tar && \
+  echo "Compressing successful. Don't forget to remove target file and target file's tar archive!"
