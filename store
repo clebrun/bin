@@ -1,6 +1,10 @@
 #! /usr/bin/env zsh
 
+# tar'ed version of target file/folder name
+TAR_GET="$1.tar"
+
 # tar + zstd made easy-er-ish
-tar -cvf $1.tar $1 && \
-  zstd -19 $1.tar && \
-  echo "Compressing successful. Don't forget to remove target file and target file's tar archive!"
+tar -cvf $TAR_GET $1 && \
+  zstd -19 $TAR_GET && \
+  rm $TAR_GET && \
+  echo "$1 Successfully Compressed. $1 isn't removed by this command, that is left to you."
