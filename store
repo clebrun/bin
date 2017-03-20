@@ -1,10 +1,11 @@
 #! /usr/bin/env zsh
 
+# TODO: determine if archive is tar'ed
 # tar'ed version of target file/folder name
 TAR_GET="$1.tar"
 
 # tar + zstd made easy-er-ish
 tar -cvf $TAR_GET $1 && \
   zstd -19 $TAR_GET && \
-  rm $TAR_GET && \
-  echo "$1 Successfully Compressed. $1 isn't removed by this command, that is left to you."
+  rm -ri $TAR_GET $1 && \
+  echo "$1 Successfully Compressed."
