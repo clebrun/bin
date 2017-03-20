@@ -1,0 +1,13 @@
+#! /usr/bin/env zsh
+
+# TODO: TEST
+
+# Works on folder names, but not individual filenames with extensions
+# TODO: Check $1 is in the form of x.tar.zstd
+TARNAME=$(echo "$1" | cut -d'.' -f-2) # $1 without .zstd
+BASENAME=$(echo "$1" | cut -d'.' -f-1) # $1 without .tar.zstd
+
+zstd -d $1 && \
+  tar -xf $TARNAME && \
+  rm -ri $TARNAME $1 && \
+  echo "$1 Successfully decompressed to $BASENAME."
