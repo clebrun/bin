@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# Grab the active sink number from pactl list sinks
+pactl list sinks | \
+  grep -B 1 "State: RUNNING" | \
+  head -n 1 | \
+  sed "s/[^0-9]//g"
+
+# This was made to work with my .xmonad/xmonad.hs volume key bindings:
+# 
+# [((myModKey, xK_a), spawn "pactl set-sink-volume $(active_sink) -5%"),
+# ((myModKey, xK_o), spawn "pactl set-sink-volume $(active_sink) +5%")]
+#
+# Before, where active_sink (which is the script name), there was a hard coded
+# active sink number, which changes sometimes. Got tired of having to change it myself.
