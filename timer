@@ -1,0 +1,7 @@
+#! /usr/bin/env bash
+
+# basic timer with sleep + sl on a loop, interupt with Ctrl-C
+# TODO: Show help message if no arguments
+
+echo "Get out of timer wakeup animation with Ctrl-C in between trains."
+sleep $1; while :; do sl; sleep 3; done
