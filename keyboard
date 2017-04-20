@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+setxkbmap dvorak
+setxkbmap -option caps:escape
