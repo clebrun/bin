@@ -9,5 +9,6 @@ BASENAME=$(echo "$1" | cut -d'.' -f-1) # $1 without .tar.zstd
 
 zstd -d $1 && \
   tar -xf $TARNAME && \
-  rm -ri $TARNAME $1 && \
+  rm -rI $TARNAME && \ 
+  rm -rI $1 && \
   echo "$1 Successfully decompressed to $BASENAME."
