@@ -1,0 +1,102 @@
+#! /usr/bin/env ruby
+# vi: ft=ruby
+# Author: Cooper LeBrun, <cooperlebrun@gmail.com>
+# License: MIT
+
+HELP_MSG = <<HELP
+Usage: prylog <remote_name> <log_lines>
+  This drops you into a pry session with ARGF, a file argument or STDIN, parsed
+  as heroku logs, to help with advanced log analysis. The logs are available
+  under the logs variable, and have already been parsed into an array of
+  hashes. This message is in the HELP_MSG constant.
+
+FUNCTIONS:
+  parse_kv_message      - Turns a log line hash with an array of 'foo=bar' :message
+                          into a hash with 'foo' => 'bar' pairs. Useful for
+                          SQL/router messages.
+  ip_search             - takes keys, returns router messages grouped by ip with those keys
+  Array#select_key_with - Useful for searching an array of parsed logs for something
+                          in a specific key, e.g. logs.select_key_with key: :from, with: 'router'
+  Array#census          - Count number of times elements occur in an array, e.g.
+                          ["foo", "bar", "foo"].census #=> { "foo" => 2, "bar" => 1 }
+VARIABLES:
+  logs - raw logs parsed with parse_log_line. Could be from anything: SQL, router, app...
+  router_logs - logs from the heroku router
+  ip_visits - Counts ips in router messages
+  ip_logs - hash of router messages grouped by ip
+HELP
+HELP_MSG.freeze
+
+# START UGLY HACK: because using pipes screws with pry's STDIN setup
+# detection. (see: https://stackoverflow.com/questions/32333962/pry-not-stopping-when-called-from-a-ruby-script-that-reads-from-stdin)
+# Causes prompt to only show after input
+raw_logs = ARGF.read.split("\n")
+
+# prepare new stdin to satisfy pry
+pry_fd_stdin = IO.sysopen('/dev/tty')
+pry_stdin    = IO.new(pry_fd_stdin, 'r')
+
+# load pry and cheat it with our stdio
+require 'pry'
+Pry.config.input = pry_stdin
+# END UGLY HACK
+
+def parse_log_line(log)
+  elements = log.split(' ')
+
+  {
+    timestamp: elements[0],
+    from: elements[1].chomp(':'),
+    message: elements.drop(2).join(' ')
+  }
+end
+
+def parse_kv_message(log_line_hash)
+  log_line_hash.clone.tap do |llh| # #clone so it doesn't mutate input
+    llh[:message] = llh[:message].split(' ').map { |e| e.split('=', 2) } # split on first equal
+      .map { |kv| kv.length == 1 ? (kv << '') : kv } # normalize any empty values, i.e. "foo="
+      .to_h
+  end
+end
+
+def ip_search(ip_logs, *keys)
+  # searches through key or keys in ip_logs' :message
+  ip_logs.map do |ip, logs|
+    [
+      ip,
+      keys.map { |key| [key, logs.map { |log| log[:message][key] }] }.to_h
+    ]
+  end.to_h
+end
+
+
+class Array
+  def select_key_with(key:, with:)
+    # search a specific key in an array of hashes for something that include? takes (String, Regex, etc.)
+    select { |h| h[key].include?(with) }
+  end
+
+  def census
+    # count how many times elements appear in an array. Output is Hash, e.g. { "foo" => 3, :bar => 5 }
+    group_by(&:itself).map { |k, v| [k, v.size] }
+      .sort_by { |a| a[1] } # sort by number of occurences
+      .reverse              # in descending order
+      .to_h
+  end
+end
+
+logs        = raw_logs.map { |log_line| parse_log_line(log_line) }
+router_logs = logs.select_key_with(key: :from, with: 'router').map { |log| parse_kv_message(log) }
+ip_visits   = router_logs.map { |log| log[:message]['fwd'] }.census # FIXME: broken?
+ip_logs     = router_logs.group_by { |log| log[:message]['fwd'] }
+
+
+# Startup Sequence
+puts "#{logs.size} lines of logs parsed."
+puts
+puts HELP_MSG
+puts
+puts "Starting Pry"
+sleep 1
+
+binding.pry
