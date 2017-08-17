@@ -13,6 +13,7 @@
 #   # TODO: Should handle rejected sudo request gracefully.
 # fi
 
+# Wrapper function for command output rendering
 do_command() { # $1 is the command title, $2 (optional) is the command to be evaluated
   # Spacing/Formatting
   echo
@@ -25,7 +26,7 @@ do_command() { # $1 is the command title, $2 (optional) is the command to be eva
   fi
 }
 
-# Package manager update/upgrade
+# OS SPECIFIC STUFF
 if [[ "$OSTYPE" == "darwin"* ]]; then
   do_command 'BREW' "brew update && brew upgrade && echo 'Update successful.'"
   do_command 'BACKUP' "sudo acts && echo 'Backup was successful!'"
@@ -35,8 +36,6 @@ elif [[ "$OSTYPE" == "linux-gnu" ]]; then
 else
   do_command 'CANNOT UPDATE WITHOUT DETERMINING HOST OS.'
 fi
-
-do_command 'WEATHER' "curl http://wttr.in/Goleta"
 
 # RUBY STUFF BEGIN
 do_command 'BUNDLE-AUDIT' "bundle-audit update"
