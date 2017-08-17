@@ -50,4 +50,4 @@ do_command 'ruby-install' \
 do_command 'TMUX' "tmux list-sessions"
 
 do_command 'NVIM UPDATE' \
-  "nvim +PlugUpdate +qa"
+  "nvim +PlugUpdate +PlugUpgrade +qa"
