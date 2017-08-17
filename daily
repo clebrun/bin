@@ -29,7 +29,6 @@ do_command() { # $1 is the command title, $2 (optional) is the command to be eva
 # OS SPECIFIC STUFF
 if [[ "$OSTYPE" == "darwin"* ]]; then
   do_command 'BREW' "brew update && brew upgrade && echo 'Update successful.'"
-  do_command 'BACKUP' "sudo acts && echo 'Backup was successful!'"
 elif [[ "$OSTYPE" == "linux-gnu" ]]; then
   echo 'Assuming linux distribution to be Ubuntu/Debian (apt based).'
   do_command 'APT-GET' "sudo apt-get update && sudo apt-get upgrade && echo 'Update successful'"
