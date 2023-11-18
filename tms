@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+# Tweaked from https://github.com/ThePrimeagen/.dotfiles/blob/master/bin/.local/scripts/tmux-sessionizer
+
+if [[ $# -eq 1 ]]; then
+    # Don't search for a dir if one is already provided.
+    selected=$1
+else
+    # TODO: check for fd, warn and exit if not found
+    #
+    # Find dirs in ~/Code and ~/dotfiles that contain a .git folder.
+    # -j2 = use 2 threads, -td = only find directories, -HIp = show hidden, show ignored, use full path
+    # '.git$' only return matches ending with .git
+    # dirname - get the path to the dir *containing* the matched .git dir
+    selected=$(fd -j2 -td -HIp '.git$' ~/Code | xargs dirname | fzf --ansi)
+    echo "selected $selected"
+
+    # could have used find, but fd is significantly faster.
+fi
+
+# Exit now if nothing was selected
+if [[ -z $selected ]]; then
+    exit 0
+fi
+
+selected_name=$(basename "$selected" | tr . _)
+tmux_running=$(pgrep tmux)
+
+if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
+    tmux new-session -s $selected_name -c $selected
+    exit 0
+fi
+
+if ! tmux has-session -t=$selected_name 2> /dev/null; then
+    tmux new-session -ds $selected_name -c $selected
+fi
+
+if [[ -z $TMUX ]]; then
+    tmux attach -t $selected_name
+else
+    tmux switch-client -t $selected_name
+fi
