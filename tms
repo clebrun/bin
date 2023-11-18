@@ -12,7 +12,7 @@ else
     # -j2 = use 2 threads, -td = only find directories, -HIp = show hidden, show ignored, use full path
     # '.git$' only return matches ending with .git
     # dirname - get the path to the dir *containing* the matched .git dir
-    selected=$(fd -j2 -td -HIp '.git$' ~/Code | xargs dirname | fzf --ansi)
+    selected=$( ( fd -j2 -td -HIp '.git$' ~/Code | xargs dirname ; printf "/home/hxe/dotfiles" ) | fzf --ansi )
     echo "selected $selected"
 
     # could have used find, but fd is significantly faster.
