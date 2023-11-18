@@ -1,17 +1,8 @@
 #! /usr/bin/env bash
-# TODO: Make tasks happen concurrently
+# TODO: Open in new tmux session if not already in one
 # TODO: Save daily output into persistent log
 
 # A script for running daily maintenance tasks.
-
-# Ask for sudo privileges. Required for acts/tarsnap backup
-# Don't want to ask for privs lazily, because this should be the sort of thing you
-# can walk away from and expect it to be done when you come back.
-# if [[ $UID != 0 ]]; then # only ask if not already elevated.
-#   echo "This script requires sudo privileges for backup access."
-#   sudo echo "Thanks. Commencing dailies."
-#   # TODO: Should handle rejected sudo request gracefully.
-# fi
 
 # Wrapper function for command output rendering
 do_command() { # $1 is the command title, $2 (optional) is the command to be evaluated
@@ -26,26 +17,14 @@ do_command() { # $1 is the command title, $2 (optional) is the command to be eva
   fi
 }
 
+# Update tldr cache
+[[ $(command -v tldr) ]] && do_command 'updating tdlr:' 'tldr --update'
+
 # OS SPECIFIC STUFF
 if [[ "$OSTYPE" == "darwin"* ]]; then
-  do_command 'BREW' "brew update && brew upgrade && echo 'Update successful.'"
-elif [[ "$OSTYPE" == "linux-gnu" ]]; then
-  echo 'Assuming linux distribution to be Ubuntu/Debian (apt based).'
-  do_command 'APT-GET' "sudo apt-get update && sudo apt-get upgrade && echo 'Update successful'"
+  do_command 'updating brew:' "brew update && brew upgrade && echo 'Update successful.'"
 else
-  do_command 'CANNOT UPDATE WITHOUT DETERMINING HOST OS.'
+  do_command 'updating pamac:' "pamac checkupdates && pamac upgrade"
 fi
 
-# RUBY STUFF BEGIN
-do_command 'BUNDLE-AUDIT' "bundle-audit update"
-
-do_command 'RUBYGEMS' "gem update --system"
-
-do_command 'ruby-install' \
-  "ruby-install"
-# RUBY STUFF END
-
-do_command 'TMUX' "tmux list-sessions"
-
-do_command 'NVIM UPDATE' \
-  "nvim +PlugUpdate +PlugUpgrade +qa"
+do_command 'current tmux sessions:' "tmux list-sessions"
