@@ -1,2 +1,3 @@
 # NOTES
-Any script should have 755 (owner can read write execute, everyone else can read and execute) permissions at the minimum.
+A collection of some scripts I use. Generally anything related to specific
+things (hyprland, xremap) are kept in https://github.com/hxegon/dotfiles.
