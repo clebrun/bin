@@ -12,7 +12,8 @@ else
     # -j2 = use 2 threads, -td = only find directories, -HIp = show hidden, show ignored, use full path
     # '.git$' only return matches ending with .git
     # dirname - get the path to the dir *containing* the matched .git dir
-    selected=$( ( fd -j2 -td -HIp '.git$' ~/Code | xargs dirname ; printf "/home/hxe/dotfiles" ) | fzf --ansi )
+    extra="/home/hxe/dotfiles\n/home/hxe/scripts\n/home/hxe/.config/nvim"
+    selected=$( ( fd -j2 -td -HIp '.git$' ~/Code | xargs dirname ; printf $extra ) | fzy -l 50 )
     echo "selected $selected"
 
     # could have used find, but fd is significantly faster.
@@ -40,3 +41,4 @@ if [[ -z $TMUX ]]; then
 else
     tmux switch-client -t $selected_name
 fi
+exit 0
