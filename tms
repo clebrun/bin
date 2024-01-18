@@ -13,7 +13,8 @@ else
     # '.git$' only return matches ending with .git
     # dirname - get the path to the dir *containing* the matched .git dir
     extra="/home/hxe/dotfiles\n/home/hxe/scripts\n/home/hxe/.config/nvim"
-    selected=$( ( fd -j2 -td -HIp '.git$' ~/Code | xargs dirname ; printf $extra ) | fzy -l 50 )
+    fzy_prompt="Open tmux session for project: "
+    selected=$( ( fd -j2 -td -HIp '.git$' ~/Code | xargs dirname ; printf $extra ) | fzy -p "$fzy_prompt" -l 50 )
     echo "selected $selected"
 
     # could have used find, but fd is significantly faster.
