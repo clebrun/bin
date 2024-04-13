@@ -12,7 +12,7 @@ else
     # -j2 = use 2 threads, -td = only find directories, -HIp = show hidden, show ignored, use full path
     # '.git$' only return matches ending with .git
     # dirname - get the path to the dir *containing* the matched .git dir
-    extra="/home/hxe/dotfiles\n/home/hxe/scripts\n/home/hxe/.config/nvim"
+    extra="/home/hxegon/dotfiles\n/home/hxegon/scripts\n/home/hxegon/.config/nvim\n/homhe/hxegon/Notes"
     fzy_prompt="Open tmux session for project: "
     selected=$( ( fd -j2 -td -HIp '.git$' ~/Code | xargs dirname ; printf $extra ) | fzy -p "$fzy_prompt" -l 50 )
     echo "selected $selected"
